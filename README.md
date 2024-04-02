@@ -37,6 +37,11 @@ int pthread_create(pthread_t *thread, const pthread_attr_t *attr,
 ◼ int pthread_equal(pthread_t t1, pthread_t t2); //比较两线程id是否相等
 
 ◼ void pthread_exit(void *retval);//退出当前线程
+pthread_exit(NULL)用于线程退出，可以指定返回值，以便其他线程通过pthread_join()函数获取该线程的返回值.pthread_exit()代码后面的代码不会被执行，即使在主线程中使用也是这样。
+
+return，是函数返回，return会调用局部对象的析构函数，而pthread_exit不会.在main()函数中写return，会被编译器优化，也会像exit一样直接杀死所有进程.用pthread_exit只会使主线程自身退出，产生的子线程继续执行；用return则所有线程退出
+
+exit()是进程退出，如果在线程函数中调用exit，那该线程的进程也就挂了,会导致该线程所在进程的其他线程也挂掉，比较严重
 
 ◼ int pthread_join(pthread_t thread, void **retval);//连接已终止的子线程回收资源
 
